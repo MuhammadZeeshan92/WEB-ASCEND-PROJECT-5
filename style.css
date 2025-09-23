@@ -1,0 +1,328 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow: hidden;
+}
+
+#app {
+    text-align: center;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+    backdrop-filter: blur(20px);
+    padding: 25px;
+    width: 100%;
+    max-width: 450px;
+    max-height: 85vh;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 
+        0 8px 32px rgba(31, 38, 135, 0.37),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+#app:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(31, 38, 135, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.title {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 700;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Input field styling */
+#cityInput {
+    width: 100%;
+    max-width: 260px;
+    padding: 12px 18px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    color: #2d3748;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#cityInput::placeholder {
+    color: rgba(45, 55, 72, 0.6);
+}
+
+#cityInput:focus {
+    border-color: #667eea;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Button styling */
+#getWeatherButton {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 20px 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+#getWeatherButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s;
+}
+
+#getWeatherButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+#getWeatherButton:hover::before {
+    left: 100%;
+}
+
+#getWeatherButton:active {
+    transform: translateY(0);
+}
+
+/* Enhanced Select Wrapper */
+.select-wrapper {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto 15px;
+}
+
+/* The Select Element - Much More Attractive */
+#citySelect {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    padding: 14px 48px 14px 18px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #2d3748;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 8px 25px rgba(31, 38, 135, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(15px);
+    position: relative;
+}
+
+/* Hover Effects */
+#citySelect:hover {
+    transform: translateY(-3px) scale(1.02);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+    border-color: rgba(102, 126, 234, 0.4);
+    box-shadow: 
+        0 12px 35px rgba(31, 38, 135, 0.25),
+        0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+/* Focus State */
+#citySelect:focus {
+    transform: translateY(-2px);
+    border-color: #667eea;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.85));
+    box-shadow: 
+        0 10px 30px rgba(102, 126, 234, 0.3),
+        0 0 0 6px rgba(102, 126, 234, 0.15);
+}
+
+/* Disabled State */
+#citySelect:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Custom Arrow - More Modern */
+.select-wrapper::after {
+    content: "";
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+/* Arrow animation on hover */
+.select-wrapper:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Select Helper Text */
+.select-helper {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: color 0.3s ease;
+}
+
+.select-wrapper:hover .select-helper {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+#result {
+    margin-top: 15px;
+    padding: 15px;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-align: center;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sunny-day {
+  background: linear-gradient(to top, #87ceeb, #fff);
+}
+.sunny-night {
+  background: linear-gradient(to top, #001d3d, #000814);
+  color: white;
+}
+.cloudy-day{
+  background: linear-gradient(to top, #bdc3c7, #2c3e50);
+  color: white;
+}
+.cloudy-night {
+  background: linear-gradient(to top, #434343, #000000);
+  color: white;
+}
+.rainy-day {
+  background: linear-gradient(to top, #3a6073, #16222a);
+  color: white;
+}
+.rainy-night {
+  background: linear-gradient(to top, #1c1c1c, #000000);
+  color: white;
+}
+
+.snowy-day {
+  background: linear-gradient(to top, #e0eafc, #cfdef3);
+}
+
+.snowy-night {
+  background: linear-gradient(to top, #1c1c1c, #000000);
+  color: white;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    #app {
+        margin: 0;
+        border-radius: 20px;
+        min-height: auto;
+    }
+    
+    #cityInput, #getWeatherButton {
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    #citySelect {
+        font-size: 1rem;
+        padding: 14px 48px 14px 18px;
+        border-radius: 16px;
+    }
+    
+    .select-wrapper::after {
+        right: 16px;
+        width: 22px;
+        height: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    #citySelect {
+        padding: 12px 44px 12px 16px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+    }
+    
+    .select-wrapper::after {
+        right: 14px;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .select-helper {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 360px) {
+    #app {
+        padding: 20px 15px;
+    }
+    
+    #citySelect {
+        padding: 12px 40px 12px 14px;
+        font-size: 0.9rem;
+    }
+    
+    .select-wrapper::after {
+        right: 12px;
+        width: 18px;
+        height: 18px;
+    }
+}
