@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Weather App 🌦️
 
 A simple and interactive **Weather Application** built with **HTML, CSS, and JavaScript**.  
@@ -58,3 +59,7 @@ If you'd like to improve the UI, add new features, or fix bugs:
 ## 📜 License
 
 This project is open-source and available under the [MIT License](LICENSE).  
+=======
+# WeatherApp
+Its a basic weather app developed through css, html and js.
+>>>>>>> 2d37c57c6c9f16a227cc4e7e2473e88cb9af28d4
