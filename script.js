@@ -1,20 +1,28 @@
+const result = document.getElementById('result');
+const userInput = document.getElementById('cityInput').value;
+const citySelect = document.getElementById('citySelect');
+
+
+if (!userInput) {
+    result.innerHTML = '<p class="error">Please enter a city name.</p>';
+}
+
 
 async function getWeather() {
-    const result = document.getElementById('result');
-    const userInput = document.getElementById('cityInput').value;
-    const citySelect = document.getElementById('citySelect');
-    if (!userInput) {
-        result.innerHTML = '<p class="error">Please enter a city name.</p>';
-    }
     try {
         const GeoApi = `https://geocoding-api.open-meteo.com/v1/search?name=${userInput}`;
         const geoResponse = await fetch(GeoApi);
         const geoData = await geoResponse.json();
+
+
         if (!geoData.results || geoData.results.length === 0) {
             result.innerHTML = '<p class="error">City not found.</p>';
         }
-        console.log(geoData);
+
+
         citySelect.innerHTML = '<option value="" disabled selected hidden>Choose a city…</option>';
+
+
         document.createElement('option');
         geoData.results.forEach((city) => {
             const option = document.createElement('option');
@@ -25,14 +33,12 @@ async function getWeather() {
 
         const selectedCity = citySelect.value;
         let latitude, longitude, name, country;
-        console.log(selectedCity);
         if (selectedCity) {
             [latitude, longitude, name, country] = selectedCity.split(',');
         }
         else {
             ({ latitude, longitude, name, country } = geoData.results[0]);
         }
-        console.log(latitude, longitude, name, country);
 
         citySelect.addEventListener("change", async () => {
             const selectedCity = citySelect.value;
@@ -55,7 +61,6 @@ async function getWeather() {
     <p>${is_day ? 'Day' : 'Night'}</p>`
         });
 
-        // const {latitude, longitude, name, country} = geoData.results[0];    
         const WeatherApi = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current=precipitation,apparent_temperature,is_day,weather_code,wind_speed_10m,temperature_2m,cloud_cover,rain,showers,snowfall`
         const weatherResponse = await fetch(WeatherApi);
         const weatherData = await weatherResponse.json();
