@@ -8,7 +8,7 @@ It uses the [Open-Meteo API](https://open-meteo.com/) to fetch real-time weather
 ## 🚀 Installation
 
 1. Clone the repository:
-   ```bash
+   ```
    git clone https://github.com/username/weather-app.git
    ```
 
