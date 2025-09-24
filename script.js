@@ -1,5 +1,4 @@
 const result = document.getElementById('result');
-const userInput = document.getElementById('cityInput').value;
 const citySelect = document.getElementById('citySelect');
 
 
@@ -9,36 +8,55 @@ if (!userInput) {
 
 
 async function getWeather() {
+    const userInput = document.getElementById('cityInput').value;
     try {
+        console.log(userInput);
         const GeoApi = `https://geocoding-api.open-meteo.com/v1/search?name=${userInput}`;
         const geoResponse = await fetch(GeoApi);
         const geoData = await geoResponse.json();
 
-
+        console.log(geoData);
         if (!geoData.results || geoData.results.length === 0) {
             result.innerHTML = '<p class="error">City not found.</p>';
         }
-
-
-        citySelect.innerHTML = '<option value="" disabled selected hidden>Choose a city…</option>';
-
-
-        document.createElement('option');
-        geoData?.results?.forEach((city) => {
-            const option = document.createElement('option');
-            option.value = `${city.latitude},${city.longitude},${city.name},${city.country}`;
-            option.textContent = `${city.name}, ${city.country}`;
-            citySelect.appendChild(option);
-        });
-
-        const selectedCity = citySelect.value;
-        let latitude, longitude, name, country;
-        if (selectedCity) {
-            [latitude, longitude, name, country] = selectedCity.split(',');
-        }
         else {
-            ({ latitude, longitude, name, country } = geoData.results[0]);
+            citySelect.innerHTML = '<option value="" disabled selected hidden>Choose a city…</option>';
+            console.log(geoData.results);
+            geoData.results.forEach((city) => {
+                const option = document.createElement('option');
+                option.value = `${city.latitude},${city.longitude},${city.name},${city.country}`;
+                option.textContent = `${city.name}, ${city.country}`;
+                citySelect.appendChild(option);
+            });
+
+            const selectedCity = citySelect.value;
+            let latitude, longitude, name, country;
+            if (selectedCity) {
+                [latitude, longitude, name, country] = selectedCity.split(',');
+            }
+            else {
+                ({ latitude, longitude, name, country } = geoData.results[0]);
+            }
+            const WeatherApi = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current=precipitation,apparent_temperature,is_day,weather_code,wind_speed_10m,temperature_2m,cloud_cover,rain,showers,snowfall`
+            const weatherResponse = await fetch(WeatherApi);
+            const weatherData = await weatherResponse.json();
+            const current = weatherData.current;
+            const temperature = current?.temperature_2m;
+            const windSpeed = current?.wind_speed_10m;
+            const weatherCode = current?.weather_code;
+            const is_day = current?.is_day;
+            const apparent_temperature = current?.apparent_temperature;
+            const { cls, desc } = changeBack(weatherCode, is_day)
+            document.querySelector('body').className = cls;
+            result.innerHTML = `<h2>${name}, ${country}</h2>
+        <p>🌡Temperature: ${temperature}°C (feels like ${apparent_temperature}°C)</p>
+        <p>☁️Condition: ${desc}</p>
+        <p>🌬Wind Speed: ${windSpeed} m/s</p>
+        <p>${is_day ? 'Day' : 'Night'}</p>`
         }
+
+
+    
 
         citySelect.addEventListener("change", async () => {
             const selectedCity = citySelect.value;
@@ -60,23 +78,6 @@ async function getWeather() {
     <p>🌬Wind Speed: ${windSpeed} m/s</p>
     <p>${is_day ? 'Day' : 'Night'}</p>`
         });
-
-        const WeatherApi = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current=precipitation,apparent_temperature,is_day,weather_code,wind_speed_10m,temperature_2m,cloud_cover,rain,showers,snowfall`
-        const weatherResponse = await fetch(WeatherApi);
-        const weatherData = await weatherResponse.json();
-        const current = weatherData.current;
-        const temperature = current?.temperature_2m;
-        const windSpeed = current?.wind_speed_10m;
-        const weatherCode = current?.weather_code;
-        const is_day = current?.is_day;
-        const apparent_temperature = current?.apparent_temperature;
-        const { cls, desc } = changeBack(weatherCode, is_day)
-        document.querySelector('body').className = cls;
-        result.innerHTML = `<h2>${name}, ${country}</h2>
-    <p>🌡Temperature: ${temperature}°C (feels like ${apparent_temperature}°C)</p>
-    <p>☁️Condition: ${desc}</p>
-    <p>🌬Wind Speed: ${windSpeed} m/s</p>
-    <p>${is_day ? 'Day' : 'Night'}</p>`
 
     } catch (error) {
         console.log(error);
