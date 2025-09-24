@@ -24,7 +24,7 @@ async function getWeather() {
 
 
         document.createElement('option');
-        geoData.results.forEach((city) => {
+        geoData?.results?.forEach((city) => {
             const option = document.createElement('option');
             option.value = `${city.latitude},${city.longitude},${city.name},${city.country}`;
             option.textContent = `${city.name}, ${city.country}`;
